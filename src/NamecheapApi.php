@@ -209,19 +209,20 @@ class NamecheapApi
                 'data'      => $err
             );
         } else {
-            $json = json_decode( $response );
-            xdebug_var_dump($json);
-            if ( !is_null($json) ) {
-                if ( $json->success ) {
+            $xml = simplexml_load_string($response, 'SimpleXMLElement');
+            if ( !is_null($xml) ) {
+                if ( 'OK' == $xml->attributes()['Status'] ) {
                     $resp = array(
                         'status'    => 'success',
                         'apicall'   => $namecheap_api_call,
+                        'errors'    => [],
                         'data'      => $response
                     );
                 } else {
                     $resp = array(
                         'status'    => 'error',
                         'apicall'   => $namecheap_api_call,
+                        'errors'    => [$xml->Errors],
                         'data'      => $response
                     );
                 }
@@ -229,10 +230,10 @@ class NamecheapApi
                 $resp = array(
                     'status'    => 'error',
                     'apicall'   => $namecheap_api_call,
+                    'errors'    => [$xml->Errors],
                     'data'      => $response
                 );
             }
-
         }
 
         return $resp;
