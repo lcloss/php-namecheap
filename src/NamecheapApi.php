@@ -89,6 +89,7 @@ class NamecheapApi
 
         $api_call .= "&SLD=" . $matches[1] . "&TLD=" . $matches[2];
 
+        $count = 0;
         $records = [];
         foreach( self::$dns_records as $dns_record ) {
             $dns_record['host'] = str_replace( '%domain%', $domain, $dns_record['host']);
@@ -98,7 +99,6 @@ class NamecheapApi
             $dns_record['value'] = str_replace( '%hostname%', $hostname, $dns_record['value']);
             $dns_record['value'] = str_replace( '%acme_challenge%', $acme_challenge, $dns_record['value']);
 
-            $count = 0;
             if( 'AAAA' == $dns_record['recordtype'] ) {
                 if ( 0 == $only_acme && !empty($ipv6) ) {
                     $count++;
