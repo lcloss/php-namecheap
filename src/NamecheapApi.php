@@ -62,7 +62,7 @@ class NamecheapApi
 
     public function createDomain( $domain, $contacts, $years = 1, $free_whois = 1, $wgenabled = 1, $admin_order = 0, $premium = 0 )
     {
-        $api_call = CMD_CREATE;
+        $api_call = self::CMD_CREATE;
         $api_call .= '&DomainName=' . $domain;
         $api_call .= '&Years=' . $years;
 
@@ -82,7 +82,7 @@ class NamecheapApi
 
     public function setDns( $domain, $ip, $ipv6 = '', $setNS = 0, $setDMARC = 1, $hostname = '', $acme_challenge = '', $only_acme = 0 )
     {
-        $api_call = CMD_SETDNS;
+        $api_call = self::CMD_SETDNS;
 
         $domain_pattern = '/([^.]*)?\.(.*)$/';
         preg_match( $domain_pattern, $domain, $matches );
@@ -164,9 +164,9 @@ class NamecheapApi
         $namecheap_api_call = 'https://%service%/xml.response?ApiUser=%user%&ApiKey=%key%&UserName=%user%&ClientIp=%client_ip%&Command=%command%';
 
         if( $this->service == 'production' ) {
-            $service = PRODUCTION_URL;
+            $service = self::PRODUCTION_URL;
         } else {
-            $service = SANDBOX_URL;
+            $service = self::SANDBOX_URL;
         }
 
         $namecheap_api_call = str_replace('%service%', $service);
