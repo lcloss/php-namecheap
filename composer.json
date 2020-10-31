@@ -1,0 +1,14 @@
+{
+    "name": "lcloss/namecheap",
+    "description": "Package for Namecheap API",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luciano Closs",
+            "email": "lcloss@lcloss.dev"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
