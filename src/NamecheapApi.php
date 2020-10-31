@@ -205,6 +205,7 @@ class NamecheapApi
         if ($err) {
             $resp = array(
                 'status'    => 'error',
+                'apicall'   => $namecheap_api_call,
                 'data'      => $err
             );
         } else {
@@ -213,17 +214,20 @@ class NamecheapApi
                 if ( $json->success ) {
                     $resp = array(
                         'status'    => 'success',
+                        'apicall'   => $namecheap_api_call,
                         'data'      => $response
                     );
                 } else {
                     $resp = array(
                         'status'    => 'error',
+                        'apicall'   => $namecheap_api_call,
                         'data'      => $response
                     );
                 }
             } else {
                 $resp = array(
                     'status'    => 'error',
+                    'apicall'   => $namecheap_api_call,
                     'data'      => $response
                 );
             }
