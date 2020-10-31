@@ -169,11 +169,11 @@ class NamecheapApi
             $service = self::SANDBOX_URL;
         }
 
-        $namecheap_api_call = str_replace('%service%', $service);
-        $namecheap_api_call = str_replace('%user%', $this->user);
-        $namecheap_api_call = str_replace('%key%', $this->key);
-        $namecheap_api_call = str_replace('%client_ip%', $this->ip);
-        $namecheap_api_call = str_replace('%command%', $command);
+        $namecheap_api_call = str_replace('%service%', $service, $namecheap_api_call);
+        $namecheap_api_call = str_replace('%user%', $this->user, $namecheap_api_call);
+        $namecheap_api_call = str_replace('%key%', $this->key, $namecheap_api_call);
+        $namecheap_api_call = str_replace('%client_ip%', $this->ip, $namecheap_api_call);
+        $namecheap_api_call = str_replace('%command%', $command, $namecheap_api_call);
 
         $token = '';
         $headers = array(
