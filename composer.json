@@ -1,14 +1,24 @@
 {
     "name": "lcloss/namecheap",
     "description": "Package for Namecheap API",
+    "keywords": ["php","namecheap", "api"],
+    "homepage": "https://php-namecheap.devcorner.io",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Luciano Closs",
-            "email": "lcloss@lcloss.dev"
+            "email": "lcloss@lcloss.dev",
+            "homepage": "https://lucianocloss.com",
+            "role": "Developer"
         }
     ],
     "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "LCloss\\Namecheap\\": "src/"
+        }
+    },
     "require": {}
+
 }
