@@ -84,7 +84,7 @@ class NamecheapApi
     {
         $api_call = CMD_SETDNS;
 
-        $domain_pattern = '/([^.]*)\.([^.]*)$/';
+        $domain_pattern = '/([^.]*)?\.(.*)$/';
         preg_match( $domain_pattern, $domain, $matches );
 
         $api_call .= "&SLD=" . $matches[1] . "&TLD=" . $matches[2];
@@ -99,7 +99,7 @@ class NamecheapApi
             $dns_record['value'] = str_replace( '%acme_challenge%', $acme_challenge, $dns_record['value']);
 
             $count = 0;
-            if( 'AAAA' == $dns_record['recordType'] ) {
+            if( 'AAAA' == $dns_record['recordtype'] ) {
                 if ( !empty($ipv6) ) {
                     $count++;
 
@@ -107,7 +107,7 @@ class NamecheapApi
                     $api_call .= "&RecordType" . $count . "=" . $dns_record['recordtype'];
                     $api_call .= "&Address" . $count . "=" . urlencode( $dns_record['value'] );
                 }
-            } elseif( 'NS' == $dns_record['recordType'] || 'ns1' == $dns_record['host'] || 'ns2' == $dns_record['host'] ) {
+            } elseif( 'NS' == $dns_record['recordtype'] || 'ns1' == $dns_record['host'] || 'ns2' == $dns_record['host'] ) {
                 if( 1 == $setNS ) {
                     $count++;
 
@@ -115,7 +115,7 @@ class NamecheapApi
                     $api_call .= "&RecordType" . $count . "=" . $dns_record['recordtype'];
                     $api_call .= "&Address" . $count . "=" . urlencode( $dns_record['value'] );
                 }
-            } elseif( '_dmarc.' == $dns_record['recordType'] ) {
+            } elseif( '_dmarc.' == $dns_record['recordtype'] ) {
                 if( 1 == $setDMARC ) {
                     $count++;
 
@@ -123,7 +123,7 @@ class NamecheapApi
                     $api_call .= "&RecordType" . $count . "=" . $dns_record['recordtype'];
                     $api_call .= "&Address" . $count . "=" . urlencode( $dns_record['value'] );
                 }
-            } elseif( '_acme-challenge.' == $dns_record['recordType'] ) {
+            } elseif( '_acme-challenge.' == $dns_record['record'] ) {
                 if( !empty($acme_challenge) ) {
                     $count++;
 
@@ -131,7 +131,9 @@ class NamecheapApi
                     $api_call .= "&RecordType" . $count . "=" . $dns_record['recordtype'];
                     $api_call .= "&Address" . $count . "=" . urlencode( $dns_record['value'] );
                 }
-            } elseif( '@' == $dns_record['record'] && 'TXT' == $dns_record['recordType'] && (substr($dns_record['value'], 0, 6) == 'v=spf1' || substr($dns_record['value'], 0, 13) == 'domainconnect') ) {
+            } elseif( ('@' == $dns_record['record'] || '_domainconnect.' == $dns_record['record']) && 
+                        'TXT' == $dns_record['recordtype'] && 
+                        (substr($dns_record['value'], 0, 6) == 'v=spf1' || substr($dns_record['value'], 0, 13) == 'domainconnect') ) {
                 if( !empty($hostname) ) {
                     $count++;
 
