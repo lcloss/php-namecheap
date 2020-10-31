@@ -210,6 +210,7 @@ class NamecheapApi
             );
         } else {
             $json = json_decode( $response );
+            xdebug_var_dump($json);
             if ( !is_null($json) ) {
                 if ( $json->success ) {
                     $resp = array(
