@@ -216,6 +216,7 @@ class NamecheapApi
                         'status'    => 'success',
                         'apicall'   => $namecheap_api_call,
                         'errors'    => [],
+                        'warnings'  => [],
                         'data'      => $response
                     );
                 } else {
@@ -223,6 +224,7 @@ class NamecheapApi
                         'status'    => 'error',
                         'apicall'   => $namecheap_api_call,
                         'errors'    => [$xml->Errors],
+                        'warnings'    => [$xml->Warnings],
                         'data'      => $response
                     );
                 }
@@ -231,6 +233,7 @@ class NamecheapApi
                     'status'    => 'error',
                     'apicall'   => $namecheap_api_call,
                     'errors'    => [$xml->Errors],
+                    'warnings'    => [$xml->Warnings],
                     'data'      => $response
                 );
             }
