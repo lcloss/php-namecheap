@@ -107,7 +107,7 @@ class NamecheapApi
                     $api_call .= "&RecordType" . $count . "=" . $dns_record['recordtype'];
                     $api_call .= "&Address" . $count . "=" . urlencode( $dns_record['value'] );
                 }
-            } elseif( 'NS' == $dns_record['recordtype'] || 'ns1' == $dns_record['host'] || 'ns2' == $dns_record['host'] ) {
+            } elseif( 'NS' == $dns_record['recordtype'] || 'ns1.' == $dns_record['record'] || 'ns2.' == $dns_record['record'] ) {
                 if( 0 == $only_acme && 1 == $setNS ) {
                     $count++;
 
