@@ -89,6 +89,7 @@ class NamecheapApi
 
         $api_call .= "&SLD=" . $matches[1] . "&TLD=" . $matches[2];
 
+        $count = 0;
         $records = [];
         foreach( self::$dns_records as $dns_record ) {
             $dns_record['host'] = str_replace( '%domain%', $domain, $dns_record['host']);
@@ -98,7 +99,6 @@ class NamecheapApi
             $dns_record['value'] = str_replace( '%hostname%', $hostname, $dns_record['value']);
             $dns_record['value'] = str_replace( '%acme_challenge%', $acme_challenge, $dns_record['value']);
 
-            $count = 0;
             if( 'AAAA' == $dns_record['recordtype'] ) {
                 if ( 0 == $only_acme && !empty($ipv6) ) {
                     $count++;
@@ -107,7 +107,7 @@ class NamecheapApi
                     $api_call .= "&RecordType" . $count . "=" . $dns_record['recordtype'];
                     $api_call .= "&Address" . $count . "=" . urlencode( $dns_record['value'] );
                 }
-            } elseif( 'NS' == $dns_record['recordtype'] || 'ns1' == $dns_record['host'] || 'ns2' == $dns_record['host'] ) {
+            } elseif( 'NS' == $dns_record['recordtype'] || 'ns1.' == $dns_record['record'] || 'ns2.' == $dns_record['record'] ) {
                 if( 0 == $only_acme && 1 == $setNS ) {
                     $count++;
 
@@ -209,18 +209,22 @@ class NamecheapApi
                 'data'      => $err
             );
         } else {
-            $json = json_decode( $response );
-            if ( !is_null($json) ) {
-                if ( $json->success ) {
+            $xml = simplexml_load_string($response, 'SimpleXMLElement');
+            if ( !is_null($xml) ) {
+                if ( 'OK' == $xml->attributes()['Status'] ) {
                     $resp = array(
                         'status'    => 'success',
                         'apicall'   => $namecheap_api_call,
+                        'errors'    => [],
+                        'warnings'  => [],
                         'data'      => $response
                     );
                 } else {
                     $resp = array(
                         'status'    => 'error',
                         'apicall'   => $namecheap_api_call,
+                        'errors'    => [$xml->Errors],
+                        'warnings'    => [$xml->Warnings],
                         'data'      => $response
                     );
                 }
@@ -228,10 +232,11 @@ class NamecheapApi
                 $resp = array(
                     'status'    => 'error',
                     'apicall'   => $namecheap_api_call,
+                    'errors'    => [$xml->Errors],
+                    'warnings'    => [$xml->Warnings],
                     'data'      => $response
                 );
             }
-
         }
 
         return $resp;
